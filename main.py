@@ -34,7 +34,7 @@ while True:
     print(f"MESSAGE ID: {message_id}  LAST MESSAGE ID: {last_message_id}")
 
     if message_id != last_message_id:
-        sendMessage(chat_id, f"||{text}||",parse_mode="MarkdownV2")
+        sendMessage(chat_id, f"<i>{text}</i>",parse_mode="HTML")
         last_message_id = message_id
 
     sleep(2)
