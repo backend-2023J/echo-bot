@@ -11,10 +11,11 @@ def getUpdates() -> list:
 
     return updates
 
-def sendMessage(chat_id:str, text:str):
+def sendMessage(chat_id:str, text:str, parse_mode):
     params = {
         "chat_id":chat_id,
-        "text": text
+        "text": text,
+        "parse_mode": parse_mode
     }
     url = f'https://api.telegram.org/bot{TOKEN}/sendMessage'
 
@@ -33,7 +34,7 @@ while True:
     print(f"MESSAGE ID: {message_id}  LAST MESSAGE ID: {last_message_id}")
 
     if message_id != last_message_id:
-        sendMessage(chat_id, text)
+        sendMessage(chat_id, f"*{text}*",parse_mode="MarkdownV2")
         last_message_id = message_id
 
     sleep(2)
