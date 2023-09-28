@@ -21,6 +21,16 @@ def sendMessage(chat_id:str, text:str, parse_mode):
 
     response = requests.get(url, params=params)
 
+def sendPhoto(chat_id:str,photo:str):
+    params = {
+        "chat_id": chat_id,
+        "photo": photo
+    }
+    URL = f'https://api.telegram.org/bot{TOKEN}/sendPhoto'
+
+    response = requests.get(URL, params = params)
+    return response.json()
+
 last_message_id = -1
 
 while True:
@@ -28,13 +38,27 @@ while True:
 
     message_id = updates[-1]['message']['message_id']
     
-    text = updates[-1]['message']['text']
+    message = updates[-1]['message']
     chat_id = updates[-1]['message']['chat']['id']
 
     print(f"MESSAGE ID: {message_id}  LAST MESSAGE ID: {last_message_id}")
 
     if message_id != last_message_id:
-        sendMessage(chat_id, f"<i>{text}</i>",parse_mode="HTML")
+        text = message.get('text')
+        photo = message.get('photo')
+
+        if text != None:
+            if text == "/start":
+                
+                sendMessage(chat_id, f"<i>welcome to bot!</i>",parse_mode="HTML")
+            else:   
+                sendMessage(chat_id, f"<i>{text}</i>",parse_mode="HTML")
+        elif photo != None:
+            file_id = photo[0]['file_id']
+            sendPhoto(chat_id, file_id)
+        else:
+            sendMessage(chat_id, f"other format")
+
         last_message_id = message_id
 
     sleep(2)
