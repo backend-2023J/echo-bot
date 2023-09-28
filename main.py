@@ -11,11 +11,10 @@ def getUpdates() -> list:
 
     return updates
 
-def sendMessage(chat_id:str, text:str, parse_mode):
+def sendMessage(chat_id:str, text:str, ):
     params = {
         "chat_id":chat_id,
-        "text": text,
-        "parse_mode": parse_mode
+        "text": text
     }
     url = f'https://api.telegram.org/bot{TOKEN}/sendMessage'
 
@@ -46,13 +45,12 @@ while True:
     if message_id != last_message_id:
         text = message.get('text')
         photo = message.get('photo')
-
         if text != None:
             if text == "/start":
                 
-                sendMessage(chat_id, f"<i>welcome to bot!</i>",parse_mode="HTML")
+                sendMessage(chat_id, "welcome to bot!")
             else:   
-                sendMessage(chat_id, f"<i>{text}</i>",parse_mode="HTML")
+                sendMessage(chat_id, text)
         elif photo != None:
             file_id = photo[0]['file_id']
             sendPhoto(chat_id, file_id)
